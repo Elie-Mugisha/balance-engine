@@ -1,6 +1,6 @@
-import { TransactionPayload } from "./ledger.types";
+import { TransactionPayload } from "../types/ledger.types";
 import { calculateLedgerBalance } from "./ledger.validator";
-import { UnbalancedTransactionError } from "./ledger.errors";
+import { UnbalancedTransactionError } from "../errors/ledger.errors";
 
 export function assertTransactionBalanced(payload: TransactionPayload): void {
   const result = calculateLedgerBalance(payload.entries);

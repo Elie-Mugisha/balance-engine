@@ -1,4 +1,4 @@
-import { EntryType, LedgerEntry } from "./ledger.types";
+import { EntryType, LedgerEntry } from "../types/ledger.types";
 
 export interface BalanceCheckResult {
   readonly isBalanced: boolean;

@@ -1,4 +1,4 @@
-import { UnbalancedTransactionError } from "./ledger.errors";
+import { UnbalancedTransactionError } from "../../../domain/errors/ledger.errors";
 
 describe('UnbalancedTransactionError', () => {
   it('correctly captures totals and formats the error message', () => {

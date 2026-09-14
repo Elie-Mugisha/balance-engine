@@ -1,6 +1,6 @@
-import { assertTransactionBalanced } from "./assert-balanced";
-import { EntryType, TransactionPayload } from "./ledger.types";
-import { UnbalancedTransactionError } from "./ledger.errors";
+import { assertTransactionBalanced } from "../../../domain/validators/assert-balanced";
+import { EntryType, TransactionPayload } from "../../../domain/types/ledger.types";
+import { UnbalancedTransactionError } from "../../../domain/errors/ledger.errors";
 
 describe('assertTransactionBalanced', () => {
   it('does not throw when entries are balanced', () => {

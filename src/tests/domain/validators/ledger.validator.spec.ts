@@ -1,5 +1,5 @@
-import { calculateLedgerBalance } from "./ledger.validator";
-import { EntryType, LedgerEntry } from "./ledger.types";
+import { calculateLedgerBalance } from "../../../domain/validators/ledger.validator";
+import { EntryType, LedgerEntry } from "../../../domain/types/ledger.types";
 
 describe('calculateLedgerBalance', () => {
   it('returns balanced for a simple debit-credit pair', () => {
