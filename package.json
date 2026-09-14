@@ -7,7 +7,10 @@
     "build": "tsc",
     "build:watch": "tsc -w",
     "start": "node dist/main.js",
-    "test": "jest --watch",
+    "test": "jest src",
+    "test:watch": "jest src --watch",
+    "test:labs": "jest labs",
+    "test:labs:watch": "jest labs --watch",
     "clean": "rm -rf dist coverage"
   },
   "keywords": [
