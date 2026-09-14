@@ -6,11 +6,24 @@ const config: Config = {
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.[tj]sx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          allowJs: true,
+        },
+      },
+    ],
   },
-  collectCoverageFrom: ['src/**/*.(t|j)s'],
-  coverageDirectory: './coverage',
-  moduleFileExtensions: ['js', 'json', 'ts']
+  transformIgnorePatterns: [
+    'node_modules/(?!(\\.pnpm/)?@nestjs)',
+  ],
+  collectCoverageFrom: ['**/*.(t|j)s'],
+  coverageDirectory: '../coverage',
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  moduleNameMapper: {
+    '^@nestjs/common$': '<rootDir>/tests/__mocks__/@nestjs/common.ts',
+  }
 };
 
 export default config;

@@ -15,3 +15,16 @@ export interface TransactionPayload {
   readonly currency: string;
   readonly entries: readonly LedgerEntry[]
 }
+
+export enum TransactionStatus {
+  POSTED = 'POSTED',
+  REJECTED = 'REJECTED'
+}
+
+export interface TransactionReceipt {
+  readonly transactionId: string;
+  readonly tenantId: string;
+  readonly status: TransactionStatus;
+  readonly postedAt: Date;
+  readonly entryCount: number;
+}
