@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "node api.js && tsc",
     "build:watch": "tsc -w",
-    "start": "node dist/main.js",
+    "start": "node api.js && node dist/main.js",
     "test": "jest src",
     "test:watch": "jest src --watch",
     "clean": "rm -rf dist coverage"

@@ -1,15 +1,29 @@
 import { LedgerService } from "../../ledger/ledger.service";
-import { EntryType, TransactionPayload, TransactionStatus } from "../../domain/types/ledger.types";
+import { EntryType, TransactionPayload, TransactionReceipt, TransactionStatus } from "../../domain/types/ledger.types";
 import { UnbalancedTransactionError } from "../../domain/errors/ledger.errors";
+import { LedgerRepository } from "../../domain/repositories/ledger.repository.interface";
 
 describe('LedgerService', () => {
   let service: LedgerService;
+  let mockRepository: jest.Mocked<LedgerRepository>
 
   beforeEach(() => {
-    service = new LedgerService();
+    mockRepository = {
+      saveTransaction: jest.fn().mockImplementation(async (payload: TransactionPayload): Promise<TransactionReceipt> => ({
+        transactionId: payload.transactionId,
+        tenantId: payload.tenantId,
+        status: TransactionStatus.POSTED,
+        postedAt: new Date(),
+        entryCount: payload.entries.length
+      })),
+
+      getAccountBalance: jest.fn(),
+      existsByTransanctionId: jest.fn().mockResolvedValue(false),
+    }
+    service = new LedgerService(mockRepository);
   });
 
-  it('successfully posts a balanced transaction and returns a receipt', async () => {
+  it('successfully posts a balanced transaction and persists it via repository', async () => {
     const payload: TransactionPayload = {
       transactionId: 'tx-100',
       tenantId: 'tenant-1',
@@ -27,9 +41,11 @@ describe('LedgerService', () => {
     expect(receipt.status).toBe(TransactionStatus.POSTED);
     expect(receipt.entryCount).toBe(2);
     expect(receipt.postedAt).toBeInstanceOf(Date);
+    expect(mockRepository.saveTransaction).toHaveBeenCalledWith(payload);
+    expect(mockRepository.saveTransaction).toHaveBeenCalledTimes(1);
   });
 
-  it('rejects an unbalanced transaction by throwing UnbalancedTransactionError', () => {
+  it('rejects an unbalanced transaction before reaching the repository', () => {
     const payload: TransactionPayload = {
       transactionId: 'tx-101',
       tenantId: 'tenant-2',
@@ -40,6 +56,7 @@ describe('LedgerService', () => {
       ]
     };
 
-    expect(() => service.postTransaction(payload)).toThrow(UnbalancedTransactionError)
+    expect(() => service.postTransaction(payload)).toThrow(UnbalancedTransactionError);
+    expect(mockRepository.saveTransaction).not.toHaveBeenCalled();
   })
 });
